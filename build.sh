@@ -32,6 +32,8 @@ ARCH=arm64
 "
 export ARCH=arm64
 export CLANG_TRIPLE=aarch64-linux-gnu-
+export LLVM=1
+export LLVM_IAS=1
 # end of default args
 
 pr_invalid() {
