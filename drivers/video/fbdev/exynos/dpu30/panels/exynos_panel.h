@@ -150,7 +150,6 @@ struct exynos_panel_info {
 	unsigned int bpc;
 	unsigned int eotp_disabled;
 	unsigned int continuous_underrun_max;
-	unsigned int wait_lp11;
 
 	int display_mode_count;
 	unsigned int cur_mode_idx;

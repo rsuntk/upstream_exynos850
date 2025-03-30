@@ -419,14 +419,13 @@ void DPU_EVENT_LOG_UPDATE_REGION(struct v4l2_subdev *sd,
 		struct decon_frame *req_region, struct decon_frame *adj_region)
 {
 	struct decon_device *decon = container_of(sd, struct decon_device, sd);
-	int idx = 0;
+	int idx = atomic_inc_return(&decon->d.event_log_idx) % DPU_EVENT_LOG_MAX;
 	struct dpu_log *log;
 
 	if (!decon || IS_ERR_OR_NULL(decon->d.debug_event) ||
 			IS_ERR_OR_NULL(decon->d.event_log))
 		return;
 
-	idx = atomic_inc_return(&decon->d.event_log_idx) % DPU_EVENT_LOG_MAX;
 	log = &decon->d.event_log[idx];
 	log->time = ktime_get();
 	log->type = DPU_EVT_WINUP_UPDATE_REGION;
@@ -440,13 +439,12 @@ void DPU_EVENT_LOG_WINUP_FLAGS(struct v4l2_subdev *sd, bool need_update,
 {
 	struct decon_device *decon = container_of(sd, struct decon_device, sd);
 	struct dpu_log *log;
-	int idx = 0;
+	int idx = atomic_inc_return(&decon->d.event_log_idx) % DPU_EVENT_LOG_MAX;
 
 	if (!decon || IS_ERR_OR_NULL(decon->d.debug_event) ||
 			IS_ERR_OR_NULL(decon->d.event_log))
 		return;
 
-	idx = atomic_inc_return(&decon->d.event_log_idx) % DPU_EVENT_LOG_MAX;
 	log = &decon->d.event_log[idx];
 
 	log->time = ktime_get();
@@ -460,14 +458,13 @@ void DPU_EVENT_LOG_APPLY_REGION(struct v4l2_subdev *sd,
 		struct decon_rect *apl_rect)
 {
 	struct decon_device *decon = container_of(sd, struct decon_device, sd);
-	int idx = 0;
+	int idx = atomic_inc_return(&decon->d.event_log_idx) % DPU_EVENT_LOG_MAX;
 	struct dpu_log *log;
 
 	if (!decon || IS_ERR_OR_NULL(decon->d.debug_event) ||
 			IS_ERR_OR_NULL(decon->d.event_log))
 		return;
 
-	idx = atomic_inc_return(&decon->d.event_log_idx) % DPU_EVENT_LOG_MAX;
 	log = &decon->d.event_log[idx];
 
 	log->time = ktime_get();

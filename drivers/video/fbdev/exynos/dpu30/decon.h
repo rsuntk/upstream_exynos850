@@ -836,7 +836,6 @@ struct decon_dt_info {
 	int dsim_cnt;
 	int decon_cnt;
 	int chip_ver;
-	u32 mif_freq;
 };
 
 struct decon_win {
@@ -1043,7 +1042,6 @@ struct decon_bts {
 	u32 total_bw;
 	u32 prev_total_bw;
 	u32 max_disp_freq;
-	u32 prev_minlock_stage;
 	u32 prev_max_disp_freq;
 	u64 ppc;
 	u32 line_mem_cnt;
