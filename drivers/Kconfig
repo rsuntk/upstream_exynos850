@@ -231,6 +231,8 @@ source "drivers/switch/Kconfig"
 
 source "drivers/vision/Kconfig"
 
+source "drivers/sensors/Kconfig"
+
 source "drivers/sensorhub/Kconfig"
 
 source "drivers/samsung/Kconfig"
@@ -250,10 +252,6 @@ source "drivers/usb/typec/common/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT 
 source "drivers/sti/abc/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 source "drivers/regulator/s2mpb03/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 source "drivers/mfd/sm/sm5714/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
-source "drivers/sensorhub/proximity/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
-source "drivers/sensorhub/magnetic/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
-source "drivers/sensorhub/gyroscope/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
-source "drivers/sensorhub/accelerometer/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 source "drivers/vibrator/dc/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 source "drivers/muic/sm/sm5714/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 source "drivers/battery/fuelgauge/sm5714_fuelgauge/Kconfig" # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
