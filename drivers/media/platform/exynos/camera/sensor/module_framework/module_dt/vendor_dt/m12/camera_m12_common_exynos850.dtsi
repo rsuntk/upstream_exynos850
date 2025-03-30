@@ -1,7 +1,7 @@
 /*
  * Samsung Exynos SoC series Pablo driver
  *
- * Copyright (c) 2019 Samsung Electronics Co., Ltd
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -9,12 +9,11 @@
  */
 
 #include <dt-bindings/camera/exynos_is_dt.h>
-#include "is-vendor-sensor-pwr_aas_v21s.h"
+#include "is-vendor-sensor-pwr_mmt_v12.h"
 #include "../../module_gm2.dtsi"
-#include "../../module_hi1336b.dtsi"
-#include "../../module_gc02m1.dtsi"
-#include "../../module_4ha.dtsi"
 #include "../../module_sr846d.dtsi"
+#include "../../module_gc02m1.dtsi"
+#include "../../module_gc5035.dtsi"
 
 / {
 	fragment@camera {
@@ -41,7 +40,7 @@
 				};
 
 				flash {
-					product_name = <14>; /* FLASH_S2MU106 */
+					product_name = <18>;		/* FLADRV_NAME_SM5714 */
 				};
 
 				power_seq {
@@ -49,32 +48,32 @@
 
 					scenario_normal_on {
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 500>; 		gpio = <&gpa2 3 0x1>; 	};
-						20 { pname = "rcam_af_vdd"; 	pin = <PIN_REGULATOR 1 0>; 					}; /* RCAM1_AFVDD_2P8 */
-						30 { pname = "gm2_avdd"; 	pin = <PIN_REGULATOR 1 0>; 					}; /* RCAM1_AVDD_2P8 */
-						40 { pname = "gm2_iovdd"; 	pin = <PIN_REGULATOR 1 0>;					}; /* CAM_VDDIO_1P8 */
-						50 { pname = "gm2_dvdd"; 	pin = <PIN_REGULATOR 1 2000>; 					}; /* RCAM1_DVDD_1P05 */
-						60 { pname = SEN_RST_HIGH; 	pin = <PIN_OUTPUT 1 1000>;		gpio = <&gpa2 3 0x1>;	};
-						70 { pname = I2C_ON; 		pin = <PIN_I2C 1 0>; 						};
-						80 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 2 500>; 					};
-						90 { pname = MCLK_GPIO; 	pin = <PIN_MCLK 1 0>; 						};
-						100 { pname = DELAY;		pin = <PIN_NONE 0 10000>;					};
+						/* pname = "name";		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>;		gpio = GM2_RST;		};
+						20 { pname = "rcam_af_vdd";	pin = <PIN_REGULATOR 1 0>;							}; /* RCAM1_AFVDD_2P8 */
+						30 { pname = "gm2_avdd";	pin = <PIN_OUTPUT 1 0>;			gpio = GM2_AVDD;	}; /* RCAM1_AVDD_2P8 */
+						40 { pname = "gm2_iovdd";	pin = <PIN_OUTPUT 1 0>;			gpio = GM2_IOVDD;	share = <SRT_ACQUIRE SHARED_PIN1 1>;}; /* CAM_VDDIO_1P8 */
+						50 { pname = "gm2_dvdd";	pin = <PIN_REGULATOR 1 2000>;						}; /* RCAM1_DVDD_1P05 */
+						60 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 1000>;		gpio = GM2_RST;		};
+						70 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>;							};
+						80 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 500>;								};
+						90 { pname = I2C_ON;		pin = <PIN_I2C 1 0>;								};
+						100 { pname = DELAY;		pin = <PIN_NONE 0 10000>;							};
 					};
 
 					scenario_normal_off {
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value dealy voltage>; 	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = DELAY; 		pin = <PIN_NONE 0 1000>; 					};
-						20 { pname = "rcam_af_vdd"; 	pin = <PIN_REGULATOR 0 1000>;					}; /* RCAM1_AFVDD_2P8 */
-						30 { pname = I2C_OFF; 		pin = <PIN_I2C 0 500>; 						};
-						40 { pname = MCLK_GPIO; 	pin = <PIN_MCLK 0 500>; 					};
-						50 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 1 500>; 					};
-						60 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 0 0>; 					};
-						70 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 1000>; 		gpio = <&gpa2 3 0x1>;	};
-						80 { pname = "gm2_avdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* RCAM1_AVDD_2P8 */
-						90 { pname = "gm2_dvdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* RCAM1_DVDD_1P05 */
-						100 { pname = "gm2_iovdd"; 	pin = <PIN_REGULATOR 0 1000>; 					}; /* CAM_VDDIO_1P8 */
+						/* pname = "name";		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = DELAY;			pin = <PIN_NONE 0 1000>;							};
+						20 { pname = "rcam_af_vdd";	pin = <PIN_REGULATOR 0 1000>;						}; /* RCAM1_AFVDD_2P8 */
+						30 { pname = I2C_OFF;		pin = <PIN_I2C 0 500>;								};
+						40 { pname = MCLK_GPIO;		pin = <PIN_MCLK 0 500>;								};
+						50 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						60 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 0 0>;							};
+						70 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>;		gpio = GM2_RST;		};
+						80 { pname = "gm2_avdd";	pin = <PIN_OUTPUT 0 0>;			gpio = GM2_AVDD;	}; /* RCAM1_AVDD_2P8 */
+						90 { pname = "gm2_dvdd";	pin = <PIN_REGULATOR 0 0>;							}; /* RCAM1_DVDD_1P05 */
+						100 { pname = "gm2_iovdd";	pin = <PIN_OUTPUT 0 0>;			gpio = GM2_IOVDD;	share = <SRT_RELEASE SHARED_PIN1 0>;}; /* CAM_VDDIO_1P8 */
 					};
 
 					scenario_read_rom_on {
@@ -82,10 +81,10 @@
 						gpio_scenario = <GPIO_SCENARIO_ON>;
 
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value delay voltage>; 	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = "rcam_af_vdd"; 	pin = <PIN_REGULATOR 1 0>;				}; /* RCAM1_AFVDD_2P8 */
-						20 { pname = "gm2_iovdd"; 	pin = <PIN_REGULATOR 1 1000>;				}; /* CAM_VDDIO_1P8 */
-						30 { pname = I2C_ON; 		pin = <PIN_I2C 1 500>; 					};
+						/* pname = "name";		pin = <act value delay voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = "rcam_af_vdd";	pin = <PIN_REGULATOR 1 0>;							}; /* RCAM1_AFVDD_2P8 */
+						20 { pname = "gm2_iovdd";	pin = <PIN_OUTPUT 1 5000>;		gpio = GM2_IOVDD;	}; /* CAM_VDDIO_1P8 */
+						30 { pname = I2C_ON;		pin = <PIN_I2C 1 0>;								};
 						40 { pname = DELAY;			pin = <PIN_NONE 0 500>;								};
 					};
 
@@ -94,17 +93,18 @@
 						gpio_scenario = <GPIO_SCENARIO_OFF>;
 
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value delay voltage>; 	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = I2C_OFF; 		pin = <PIN_I2C 0 500>; 					};
-						20 { pname = "gm2_iovdd"; 	pin = <PIN_REGULATOR 0 0>;				}; /* CAM_VDDIO_1P8 */
-						30 { pname = "rcam_af_vdd"; 	pin = <PIN_REGULATOR 0 0>;				}; /* RCAM1_AFVDD_2P8 */
+						/* pname = "name";		pin = <act value delay voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = I2C_OFF;		pin = <PIN_I2C 0 500>;								};
+						20 { pname = "gm2_iovdd";	pin = <PIN_OUTPUT 0 0>;			gpio = GM2_IOVDD;	}; /* CAM_VDDIO_1P8 */
+						30 { pname = "rcam_af_vdd";	pin = <PIN_REGULATOR 0 0>;							}; /* RCAM1_AFVDD_2P8 */
+						/* 40 ms low time for IO before EEPROM/OTPROM read */
 						40 { pname = DELAY;			pin = <PIN_NONE 0 40000>;							};
 					};
 				};
 			};
 
 			/* FRONT CAMERA */
-			is_sensor_hi1336: is_sensor_hi1336@D3 {
+			is_sensor_sr846: is_sensor_sr846@42 {
 				pinctrl-names = "pin0", "pin1", "pin2", "release";
 				pinctrl-0 = <>;
 				pinctrl-1 = <&sensor_mclk1_out>;
@@ -122,42 +122,52 @@
 					gpio_mclk = <&gpc0 1 0x1>;
 
 					scenario_normal_on {
+						sensor_scenario = <SENSOR_SCENARIO_NORMAL>;
+						gpio_scenario = <GPIO_SCENARIO_ON>;
+
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value dealy voltage>; 	 gpio = <gpx# # 0x1>; 	*/
-						10 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 500>; 		 gpio = <&gpa2 4 0x1>;	};
-						20 { pname = "hi1336b_avdd"; 	pin = <PIN_REGULATOR 1 0>; 					}; /* FCAM_AVDD_2P8 */
-						30 { pname = "hi1336b_iovdd"; 	pin = <PIN_REGULATOR 1 0>; 					}; /* CAM_VDDIO_1P8 */
-						40 { pname = "hi1336b_dvdd"; 	pin = <PIN_REGULATOR 1 1000>; 					}; /* FCAM_DVDD_1P1 */
-						50 { pname = "mipi_sel1"; 	pin = <PIN_OUTPUT 1 1000>; 		 gpio = <&gpg2 5 0x1>;	}; /* MIPI Select 1 : RCAM3 & FRONT  */
-						60 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 2 500>; 					};
-						70 { pname = MCLK_GPIO; 	pin = <PIN_MCLK 1 100>; 					};
-						80 { pname = SEN_RST_HIGH; 	pin = <PIN_OUTPUT 1 100>; 		 gpio = <&gpa2 4 0x1>;	};
-						90 { pname = I2C_ON; 		pin = <PIN_I2C 1 500>; 					};
-						/* need eeprom pin control */
+						/* pname = "name"; pin = <act value dealy voltage>;			gpio = <gpx# # 0x1>;	*/
+						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>;		gpio = SR846_RST;	};
+						20 { pname = "sr846_iovdd";	pin = <PIN_OUTPUT 1 500>;		gpio = SR846_IOVDD;	}; /* CAM_VDDIO_1P8 */
+						30 { pname = "sr846_ldo";	pin = <PIN_OUTPUT 1 0>;			gpio = SR846_LDO_EN;};
+						40 { pname = "mipi_sel1";	pin = <PIN_OUTPUT 1 1000>;		gpio = MIPI_SEL1;	}; /* MIPI Select 1 : RCAM3 & FRONT  */
+						50 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						60 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>;							};
+						70 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>;								};
+						80 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 2000>;		gpio = SR846_RST;	};
+						90 { pname = I2C_ON;		pin = <PIN_I2C 1 0>;								};
 					};
 
 					scenario_normal_off {
+						sensor_scenario = <SENSOR_SCENARIO_NORMAL>;
+						gpio_scenario = <GPIO_SCENARIO_OFF>;
+
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; pin = <act value dealy voltage>; 			 gpio = <gpx# # 0x1>; 	*/
-						10 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 500>; 		 gpio = <&gpa2 4 0x1>;	};
-						20 { pname = I2C_OFF; 		pin = <PIN_I2C 0 0>; 						};
-						30 { pname = MCLK_GPIO; 	pin = <PIN_MCLK 0 500>; 					};
-						40 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 1 500>; 					};
-						50 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 0 500>; 					};
-						60 { pname = "hi1336b_dvdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* FCAM_DVDD_1P1 */
-						70 { pname = "hi1336b_iovdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* CAM_VDDIO_1P8 */
-						80 { pname = "hi1336b_avdd"; 	pin = <PIN_REGULATOR 0 1000>; 					}; /* FCAM_AVDD_2P8 */
-						/* need eeprom pin control */
+						/* pname = "name";		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = DELAY;			pin = <PIN_NONE 0 500>; };
+						20 { pname = I2C_OFF;		pin = <PIN_I2C 0 0>;								};
+						30 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>;		gpio = SR846_RST;	};
+						40 { pname = MCLK_GPIO;		pin = <PIN_MCLK 0 500>;								};
+						50 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						60 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 0 500>;							};
+						70 { pname = "sr846_ldo";	pin = <PIN_OUTPUT 0 0>;			gpio = SR846_LDO_EN;};
+						80 { pname = "sr846_iovdd";	pin = <PIN_OUTPUT 0 500>;		gpio = SR846_IOVDD;	}; /* CAM_VDDIO_1P8 */
+						90 { pname = DELAY;			pin = <PIN_NONE 0 500>; };
 					};
 
 					scenario_read_rom_on {
 						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
 						gpio_scenario = <GPIO_SCENARIO_ON>;
 
-						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value delay voltage>; 	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = "hi1336b_iovdd"; 	pin = <PIN_REGULATOR 1 1000>;					}; /* CAM_VDDIO_1P8 */
-						20 { pname = I2C_ON; 		pin = <PIN_I2C 1 500>; 						};
+						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>;		gpio = SR846_RST;	};
+						20 { pname = "sr846_iovdd";	pin = <PIN_OUTPUT 1 500>;		gpio = SR846_IOVDD;	}; /* CAM_VDDIO_1P8 */
+						30 { pname = "sr846_ldo";	pin = <PIN_OUTPUT 1 0>;			gpio = SR846_LDO_EN;};
+						40 { pname = "mipi_sel1";	pin = <PIN_OUTPUT 1 1000>;		gpio = MIPI_SEL1;	}; /* MIPI Select 1 : RCAM3 & FRONT  */
+						50 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						60 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>;							};
+						70 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>;								};
+						80 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 2000>;		gpio = SR846_RST;	};
+						90 { pname = I2C_ON;		pin = <PIN_I2C 1 500>;								};
 					};
 
 					scenario_read_rom_off {
@@ -165,12 +175,21 @@
 						gpio_scenario = <GPIO_SCENARIO_OFF>;
 
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value delay voltage>; 	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = I2C_OFF; 		pin = <PIN_I2C 0 500>; 						};
-						20 { pname = "hi1336b_iovdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* CAM_VDDIO_1P8 */
+						/* pname = "name";		pin = <act value delay voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = DELAY;			pin = <PIN_NONE 0 500>; };
+						20 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>;		gpio = SR846_RST;	};
+						30 { pname = I2C_OFF;		pin = <PIN_I2C 0 0>;								};
+						40 { pname = MCLK_GPIO;		pin = <PIN_MCLK 0 500>;								};
+						50 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						60 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 0 500>;							};
+						70 { pname = "sr846_ldo";	pin = <PIN_OUTPUT 0 0>;			gpio = SR846_LDO_EN;};
+						80 { pname = "sr846_iovdd";	pin = <PIN_OUTPUT 0 500>;		gpio = SR846_IOVDD;	}; /* CAM_VDDIO_1P8 */
+						/* 40 ms low time for IO before EEPROM/OTPROM read */
+						90 { pname = DELAY;			pin = <PIN_NONE 0 40000>;							};
+
 					};
-				};
-			};
+				}; /* power_seq */
+			}; /* is_sensor_sr846 */
 
 			/* REAR SUB CAMERA */
 			is_sensor_gc02m1: is_sensor_gc02m1@6E {
@@ -191,38 +210,65 @@
 					gpio_mclk = <&gpc0 2 0x1>;
 					scenario_normal_on {
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; pin = <act value dealy voltage>; 			gpio = <gpx# # 0x1>;	*/
-						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>; 		gpio = <&gpa2 7 0x1>;	};
-						20 { pname = "gc02m1_avdd";	pin = <PIN_REGULATOR 1 0>; 					}; /* RCAM2_AVDD_2P8 */
-						30 { pname = "dvdd_ldo_en";	pin = <PIN_OUTPUT 1 0>; 		gpio = <&gpg3 0 0x1>;	};
-						40 { pname = "gc02m1_iovdd";	pin = <PIN_REGULATOR 1 1000>;					};
-						50 { pname = "mipi_sel2"; 	pin = <PIN_OUTPUT 1 1000>; 		gpio = <&gpg2 7 0x1>; 	}; /* MIPI Select 2  */
-						60 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 1000>; 		gpio = <&gpa2 7 0x1>; 	};
-						70 { pname = I2C_ON; 		pin = <PIN_I2C 1 0>; 						};
-						80 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>; 					};
-						90 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>;						};
-						100 { pname = DELAY; 		pin = <PIN_NONE 0 2000>; 					};
-
+						/* pname = "name";		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>;		gpio = GC02M1_RST;	};
+						20 { pname = "gc02m1_ldo";	pin = <PIN_OUTPUT 1 0>;			gpio = GC02M1_LDO_EN;};
+						30 { pname = "gc02m1_iovdd";pin = <PIN_OUTPUT 1 1000>;		gpio = GC02M1_IOVDD;	share = <SRT_ACQUIRE SHARED_PIN1 1>;};
+						40 { pname = "mipi_sel2";	pin = <PIN_OUTPUT 1 1000>;		gpio = MIPI_SEL2;	}; /* MIPI Select 2  */
+						50 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 1000>;		gpio = GC02M1_RST;	};
+						60 { pname = I2C_ON;		pin = <PIN_I2C 1 0>;								};
+						70 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>;							};
+						80 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>;								};
 					};
 
 					scenario_normal_off {
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name";		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = DELAY;		pin = <PIN_NONE 0 500>; 					};
-						20 { pname = I2C_OFF;		pin = <PIN_I2C 0 0>; 						};
-						30 { pname = MCLK_GPIO; 	pin = <PIN_MCLK 0 500>; 					};
-						40 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 1 500>; 					};
-						50 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 0 0>; 					};
-						60 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>; 		gpio = <&gpa2 7 0x1>; 	};
-						70 { pname = "gc02m1_iovdd";	pin = <PIN_REGULATOR 0 0>;					};
-						80 { pname = "dvdd_ldo_en";	pin = <PIN_OUTPUT 0 0>; 		gpio = <&gpg3 0 0x1>;	};
-						90 { pname = "gc02m1_avdd"; 	pin = <PIN_REGULATOR 0 1000>; 					};
+						/* pname = "name";		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = DELAY;			pin = <PIN_NONE 0 500>;								};
+						20 { pname = I2C_OFF;		pin = <PIN_I2C 0 0>;								};
+						30 { pname = MCLK_GPIO;		pin = <PIN_MCLK 0 500>;								};
+						40 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						50 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 0 0>;							};
+						60 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>;		gpio = GC02M1_RST;	};
+						70 { pname = "gc02m1_iovdd";pin = <PIN_OUTPUT 0 0>;			gpio = GC02M1_IOVDD;	share = <SRT_RELEASE SHARED_PIN1 0>;};
+						80 { pname = "gc02m1_ldo";	pin = <PIN_OUTPUT 0 0>;			gpio = GC02M1_LDO_EN;};
+						90 { pname = DELAY;			pin = <PIN_NONE 0 100>;								};
+					};
+
+					scenario_read_rom_on {
+						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
+						gpio_scenario = <GPIO_SCENARIO_ON>;
+
+						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>;		gpio = GC02M1_RST;	};
+						20 { pname = "gc02m1_ldo";	pin = <PIN_OUTPUT 1 0>;			gpio = GC02M1_LDO_EN;};
+						30 { pname = "gc02m1_iovdd";pin = <PIN_OUTPUT 1 1000>;		gpio = GC02M1_IOVDD;};
+						40 { pname = "mipi_sel2";	pin = <PIN_OUTPUT 1 1000>;		gpio = MIPI_SEL2;	}; /* MIPI Select 2  */
+						50 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 1000>;		gpio = GC02M1_RST;	};
+						60 { pname = I2C_ON;		pin = <PIN_I2C 1 0>;								};
+						70 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>;							};
+						80 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>;								};
+					};
+
+					scenario_read_rom_off {
+						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
+						gpio_scenario = <GPIO_SCENARIO_OFF>;
+
+						10 { pname = DELAY;			pin = <PIN_NONE 0 500>;								};
+						20 { pname = I2C_OFF;		pin = <PIN_I2C 0 0>;								};
+						30 { pname = MCLK_GPIO;		pin = <PIN_MCLK 0 500>;								};
+						40 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						50 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 0 0>;							};
+						60 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>;		gpio = GC02M1_RST;	};
+						70 { pname = "gc02m1_iovdd";pin = <PIN_OUTPUT 0 0>;			gpio = GC02M1_IOVDD;};
+						80 { pname = "gc02m1_ldo";	pin = <PIN_OUTPUT 0 0>;			gpio = GC02M1_LDO_EN;};
+						/* 40 ms low time for IO before EEPROM/OTPROM read */
+						90 { pname = DELAY;			pin = <PIN_NONE 0 40000>;							};
 					};
 				}; /* power_seq */
 			}; /* is_sensor_gc02m1 */
 
 			/* REAR UW CAMERA */
-			is_sensor_4ha: is_sensor_4ha@5A {
+			is_sensor_gc5035: is_sensor_gc5035@7E {
 				pinctrl-names = "pin0", "pin1", "pin2", "release";
 				pinctrl-0 = <>;
 				pinctrl-1 = <&sensor_mclk2_out>;
@@ -237,22 +283,23 @@
 				status = "okay";
 
 				power_seq {
+					use = <1>;
 					gpio_mclk = <&gpc0 2 0x1>;
+
 					scenario_normal_on {
 						sensor_scenario = <SENSOR_SCENARIO_NORMAL>;
 						gpio_scenario = <GPIO_SCENARIO_ON>;
 
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; pin = <act value dealy voltage>; 			gpio = <gpx# # 0x1>; 	*/
-						10 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 500>; 		gpio = <&gpa3 1 0x1>; 	};
-						20 { pname = "s5k4ha_avdd"; 	pin = <PIN_REGULATOR 1 0>; 					}; /* RCAM3_AVDD_2P8 */
-						30 { pname = "s5k4ha_dvdd"; 	pin = <PIN_REGULATOR 1 0>; 					}; /* RCAM3_DVDD_1P2 */
-						40 { pname = "s5k4ha_iovdd";	pin = <PIN_REGULATOR 1 1000>; 					}; /* CAM_VDDIO_1P8 */
-						50 { pname = "mipi_sel1"; 	pin = <PIN_OUTPUT 0 1000>; 		 gpio = <&gpg2 5 0x1>; 	}; /* MIPI Select 1 : RCAM3 & FRONT  */
-						60 { pname = SEN_RST_HIGH; 	pin = <PIN_OUTPUT 1 1000>;		 gpio = <&gpa3 1 0x1>; 	};
-						70 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>; 					};
-						80 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>; 						};
-						90 { pname = I2C_ON;		pin = <PIN_I2C 1 3000>; 					};
+						/* pname = "name";	pin = <act value dealy voltage>;		gpio = <gpx# # 0x1>;	*/
+						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>;		gpio = GC5035_RST;	};
+						20 { pname = "gc5035_iovdd";pin = <PIN_OUTPUT 1 1000>;		gpio = GC5035_IOVDD;}; /* CAM_VDDIO_1P8 */
+						30 { pname = "gc5035_ldo";	pin = <PIN_OUTPUT 1 500>;		gpio = GC5035_LDO_EN;}; /* RCAM3_AVDD_2P8 */
+						40 { pname = "mipi_sel1";	pin = <PIN_OUTPUT 0 500>;		gpio = MIPI_SEL1;	}; /* MIPI Select 1 : RCAM3 & FRONT  */
+						50 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 1000>;		gpio = GC5035_RST;	};
+						60 { pname = I2C_ON;		pin = <PIN_I2C 1 0>;								};
+						70 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 1000>;						};
+						80 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>;								};
 					};
 
 					scenario_normal_off {
@@ -260,105 +307,49 @@
 						gpio_scenario = <GPIO_SCENARIO_OFF>;
 
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = DELAY; 		pin = <PIN_NONE 0 500>; 					};
-						20 { pname = I2C_OFF; 		pin = <PIN_I2C 0 0>; 						};
-						30 { pname = MCLK_GPIO; 	pin = <PIN_MCLK 0 500>; 					};
-						40 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 1 500>; 					};
-						50 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 0 0>; 					};
-						60 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 1000>; 		gpio = <&gpa3 1 0x1>; 	};
-						70 { pname = "s5k4ha_iovdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* CAM_VDDIO_1P8 */
-						80 { pname = "s5k4ha_dvdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* RCAM3_DVDD_1P2 */
-						90 { pname = "s5k4ha_avdd"; 	pin = <PIN_REGULATOR 0 1000>; 					}; /* RCAM3_AVDD_2P8 */
+						/* pname = "name";		pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = DELAY;			pin = <PIN_NONE 0 500>;								};
+						20 { pname = MCLK_GPIO;		pin = <PIN_MCLK 0 500>;								};
+						30 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						40 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 0 0>;							};
+						50 { pname = I2C_OFF;		pin = <PIN_I2C 0 0>;								};
+						60 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>;		gpio = GC5035_RST;	};
+						70 { pname = "gc5035_ldo";	pin = <PIN_OUTPUT 0 1000>;		gpio = GC5035_LDO_EN;}; /* RCAM3_DVDD_1P2 */
+						80 { pname = "gc5035_iovdd";pin = <PIN_OUTPUT 0 500>;		gpio = GC5035_IOVDD;}; /* CAM_VDDIO_1P8 */
 					};
 
 					scenario_read_rom_on {
 						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
 						gpio_scenario = <GPIO_SCENARIO_ON>;
 
-						10 { pname = "s5k4ha_iovdd";	pin = <PIN_REGULATOR 1 1000>; 					};/* CAM_VDDIO_1P8 */
-						20 { pname = I2C_ON; 		pin = <PIN_I2C 1 500>; 						};
+						10 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 500>;		gpio = GC5035_RST;	};
+						20 { pname = "gc5035_iovdd";pin = <PIN_OUTPUT 1 500>;		gpio = GC5035_IOVDD;}; /* CAM_VDDIO_1P8 */
+						30 { pname = "gc5035_ldo";	pin = <PIN_OUTPUT 1 500>;		gpio = GC5035_LDO_EN;}; /* RCAM3_AVDD_2P8 */
+						40 { pname = "mipi_sel1";	pin = <PIN_OUTPUT 0 500>;		gpio = MIPI_SEL1;	}; /* MIPI Select 1 : RCAM3 & FRONT  */
+						50 { pname = SEN_RST_HIGH;	pin = <PIN_OUTPUT 1 1000>;		gpio = GC5035_RST;	};
+						60 { pname = I2C_ON;		pin = <PIN_I2C 1 0>;								};
+						70 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 1000>;						};
+						80 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>;								};
 					};
 
 					scenario_read_rom_off {
 						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
 						gpio_scenario = <GPIO_SCENARIO_OFF>;
 
-						10 { pname = I2C_OFF; 		pin = <PIN_I2C 0 500>; 						};
-						20 { pname = "s5k4ha_iovdd";	pin = <PIN_REGULATOR 0 0>; 					};/* CAM_VDDIO_1P8 */
+						10 { pname = DELAY;			pin = <PIN_NONE 0 500>;								};
+						20 { pname = MCLK_GPIO;		pin = <PIN_MCLK 0 500>;								};
+						30 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 1 500>;							};
+						40 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 0 0>;							};
+						50 { pname = I2C_OFF;		pin = <PIN_I2C 0 0>;								};
+						60 { pname = SEN_RST_LOW;	pin = <PIN_OUTPUT 0 1000>;		gpio = GC5035_RST;	};
+						70 { pname = "gc5035_ldo";	pin = <PIN_OUTPUT 0 0>;			gpio = GC5035_LDO_EN;}; /* RCAM3_DVDD_1P2 */
+						80 { pname = "gc5035_iovdd";pin = <PIN_OUTPUT 0 500>;		gpio = GC5035_IOVDD;}; /* CAM_VDDIO_1P8 */
+						/* 40 ms low time for IO before EEPROM/OTPROM read */
+						90 { pname = DELAY;			pin = <PIN_NONE 0 40000>;							};
 
 					};
 				}; /* power_seq */
-			}; /* is_sensor_4ha */
-
-			/* REAR UW CAMERA */
-			is_sensor_sr846: is_sensor_sr846@42 {
-				pinctrl-names = "pin0", "pin1", "pin2", "release";
-				pinctrl-0 = <>;
-				pinctrl-1 = <&sensor_mclk2_out>;
-				pinctrl-2 = <&sensor_mclk2_fn>;
-				pinctrl-3 = <>;
-
-				position = <4>; /* Rear:0. Front:1 Rear_sub(Rear2):2, Rear_UW(Rear3): 4, Rear4: 6*/
-				id = <3>; /* sensor node id */
-				mclk_ch = <2>;
-				sensor_i2c_ch = <3>;
-
-				status = "okay";
-
-				power_seq {
-					gpio_mclk = <&gpc0 2 0x1>;
-					scenario_normal_on {
-						sensor_scenario = <SENSOR_SCENARIO_NORMAL>;
-						gpio_scenario = <GPIO_SCENARIO_ON>;
-
-						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; pin = <act value delay voltage>; 			gpio = <gpx# # 0x1>; 	*/
-						10 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 500>; 		gpio = <&gpa3 1 0x1>; 	};
-						20 { pname = "sr846_iovdd";	pin = <PIN_REGULATOR 1 0>; 					}; /* CAM_VDDIO_1P8 */
-						30 { pname = "sr846_avdd"; 	pin = <PIN_REGULATOR 1 0>; 					}; /* RCAM3_AVDD_2P8 */
-						40 { pname = "sr846_dvdd"; 	pin = <PIN_REGULATOR 1 1000>; 					}; /* RCAM3_DVDD_1P2 */
-						50 { pname = "mipi_sel1"; 	pin = <PIN_OUTPUT 0 1000>; 		 gpio = <&gpg2 5 0x1>; 	}; /* MIPI Select 1 : RCAM3 & FRONT  */
-						60 { pname = MCLK_FUNC;		pin = <PIN_FUNCTION 2 500>; 					};
-						70 { pname = MCLK_GPIO;		pin = <PIN_MCLK 1 0>; 						};
-						80 { pname = SEN_RST_HIGH; 	pin = <PIN_OUTPUT 1 500>;		 gpio = <&gpa3 1 0x1>; 	};
-						90 { pname = I2C_ON;		pin = <PIN_I2C 1 500>; 					};
-					};
-
-					scenario_normal_off {
-						sensor_scenario = <SENSOR_SCENARIO_NORMAL>;
-						gpio_scenario = <GPIO_SCENARIO_OFF>;
-
-						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 		pin = <act value delay voltage>;	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = DELAY; pin = <PIN_NONE 0 500>; };
-						20 { pname = SEN_RST_LOW; 	pin = <PIN_OUTPUT 0 500>; 		gpio = <&gpa3 1 0x1>; 	};
-						30 { pname = I2C_OFF; 		pin = <PIN_I2C 0 0>; 						};
-						40 { pname = MCLK_GPIO; 	pin = <PIN_MCLK 0 500>; 					};
-						50 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 1 500>; 					};
-						60 { pname = MCLK_FUNC; 	pin = <PIN_FUNCTION 0 500>; 					};
-						70 { pname = "sr846_dvdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* RCAM3_DVDD_1P2 */
-						80 { pname = "sr846_avdd"; 	pin = <PIN_REGULATOR 0 0>; 					}; /* RCAM3_AVDD_2P8 */
-						90 { pname = "sr846_iovdd"; 	pin = <PIN_REGULATOR 0 1000>; 					}; /* CAM_VDDIO_1P8 */
-					};
-
-					scenario_read_rom_on {
-						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
-						gpio_scenario = <GPIO_SCENARIO_ON>;
-
-						10 { pname = "sr846_iovdd";	pin = <PIN_REGULATOR 1 1000>; 					};/* CAM_VDDIO_1P8 */
-						20 { pname = I2C_ON; 		pin = <PIN_I2C 1 500>; 						};
-					};
-
-					scenario_read_rom_off {
-						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
-						gpio_scenario = <GPIO_SCENARIO_OFF>;
-
-						10 { pname = I2C_OFF; 		pin = <PIN_I2C 0 500>; 						};
-						20 { pname = "sr846_iovdd";	pin = <PIN_REGULATOR 0 0>; 					};/* CAM_VDDIO_1P8 */
-					};
-				}; /* power_seq */
-			}; /* is_sensor_sr846 */
+			}; /* is_sensor_gc5035 */
 
 			/* MACRO CAMERA */
 			is_sensor_gc02m1_macro: is_sensor_gc02m1_macro@A4 {
@@ -376,7 +367,7 @@
 				status = "okay";
 
 				flash {
-					product_name = <14>;		/* FLADRV_NAME_S2MU106 */
+					product_name = <18>;		/* FLADRV_NAME_SM5714 */
 				};
 
 				power_seq {
@@ -388,17 +379,16 @@
 						gpio_scenario = <GPIO_SCENARIO_ON>;
 
 						/* A start node number should be over the 10 for reserved number 0~9. */
-						/* pname = "name"; 			pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>; 	*/
-						10 { pname = SEN_RST_LOW;		pin = <PIN_OUTPUT 0 500>;		gpio = <&gpa3 3 0x1>;	};
-						20 { pname = "gc02m1_avdd_2p8";		pin = <PIN_OUTPUT 1 0>;			gpio = <&gpg2 6 0x1>;	};	/* RCAM2_AVDD_2P8 */
-						30 { pname = "dvdd_ldo_en";		pin = <PIN_OUTPUT 1 0>; 		gpio = <&gpg1 6 0x1>;	};	/* DVDD_1P8 */
-						40 { pname = "gc02m1_macro_iovdd";	pin = <PIN_REGULATOR 1 1000>;					};	/* IOVDD_1P8 */
-						50 { pname = "mipi_sel2"; 		pin = <PIN_OUTPUT 0 1000>; 		gpio = <&gpg2 7 0x1>;	};	/* MIPI Select 2  */
-						60 { pname = SEN_RST_HIGH;		pin = <PIN_OUTPUT 1 1000>;		gpio = <&gpa3 3 0x1>;	};
-						70 { pname = I2C_ON;			pin = <PIN_I2C 1 0>;						};
-						80 { pname = MCLK_FUNC;			pin = <PIN_FUNCTION 2 500>;					};
-						90 { pname = MCLK_GPIO;			pin = <PIN_MCLK 1 0>;						};
-						100 { pname = DELAY;			pin = <PIN_NONE 0 2000>;					};
+						/* pname = "name";			pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
+						10 { pname = SEN_RST_LOW;		pin = <PIN_OUTPUT 0 500>;		gpio = GC02M1_MACRO_RST;	};
+						20 { pname = "avdd_dvdd_ldo";	pin = <PIN_OUTPUT 1 0>;			gpio = GC02M1_MACRO_LDO_EN;	};
+						30 { pname = "iovdd_ldo";		pin = <PIN_OUTPUT 1 0>;			gpio = GC02M1_MACRO_IOVDD;	};
+						40 { pname = "mipi_sel2";		pin = <PIN_OUTPUT 0 1000>;		gpio = MIPI_SEL2;			};	/* MIPI Select 2  */
+						50 { pname = SEN_RST_HIGH;		pin = <PIN_OUTPUT 1 1000>;		gpio = GC02M1_MACRO_RST;	};
+						60 { pname = I2C_ON;			pin = <PIN_I2C 1 0>;										};
+						70 { pname = MCLK_FUNC;			pin = <PIN_FUNCTION 2 500>;									};
+						80 { pname = MCLK_GPIO;			pin = <PIN_MCLK 1 0>;										};
+						90 { pname = DELAY;				pin = <PIN_NONE 0 2000>;									};
 					};
 
 					scenario_normal_off {
@@ -407,39 +397,40 @@
 
 						/* A start node number should be over the 10 for reserved number 0~9. */
 						/* pname = "name";			pin = <act value dealy voltage>;	gpio = <gpx# # 0x1>;	*/
-						10 { pname = DELAY;			pin = <PIN_NONE 0 500>;						};
-						20 { pname = I2C_OFF;			pin = <PIN_I2C 0 0>;						};
-						30 { pname = MCLK_GPIO; 		pin = <PIN_MCLK 0 500>; 					};
-						40 { pname = MCLK_FUNC; 		pin = <PIN_FUNCTION 1 500>; 					};
-						50 { pname = MCLK_FUNC; 		pin = <PIN_FUNCTION 0 0>; 					};
-						60 { pname = SEN_RST_LOW;		pin = <PIN_OUTPUT 0 1000>;		gpio = <&gpa3 3 0x1>;	};
-						70 { pname = "gc02m1_macro_iovdd";	pin = <PIN_REGULATOR 0 0>;					};
-						80 { pname = "dvdd_ldo_en";		pin = <PIN_OUTPUT 0 0>;			gpio = <&gpg1 6 0x1>;	};
-						90 { pname = "gc02m1_avdd_2p8";		pin = <PIN_OUTPUT 0 1000>;		gpio = <&gpg2 6 0x1>;	};
+						10 { pname = DELAY;				pin = <PIN_NONE 0 500>;										};
+						20 { pname = I2C_OFF;			pin = <PIN_I2C 0 0>;										};
+						30 { pname = MCLK_GPIO;			pin = <PIN_MCLK 0 500>;										};
+						40 { pname = MCLK_FUNC;			pin = <PIN_FUNCTION 1 500>;									};
+						50 { pname = MCLK_FUNC;			pin = <PIN_FUNCTION 0 0>;									};
+						60 { pname = SEN_RST_LOW;		pin = <PIN_OUTPUT 0 1000>;		gpio = GC02M1_MACRO_RST;	};
+						70 { pname = "iovdd_ldo";		pin = <PIN_OUTPUT 0 0>;			gpio = GC02M1_MACRO_IOVDD;	};
+						80 { pname = "avdd_dvdd_ldo";	pin = <PIN_OUTPUT 0 0>;			gpio = GC02M1_MACRO_LDO_EN;	};
 					};
 
 					scenario_read_rom_on {
 						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
 						gpio_scenario = <GPIO_SCENARIO_ON>;
 
-						10 { pname = "gc02m1_macro_iovdd";	pin = <PIN_REGULATOR 1 1000>;				};	/* CAM_VDDIO_1P8 */
-						20 { pname = I2C_ON; 			pin = <PIN_I2C 1 500>; 					};
+						10 { pname = "iovdd_ldo";		pin = <PIN_OUTPUT 1 0>;			gpio = GC02M1_MACRO_IOVDD;	};
+						20 { pname = I2C_ON;			pin = <PIN_I2C 1 500>;										};
 					};
 
 					scenario_read_rom_off {
 						sensor_scenario = <SENSOR_SCENARIO_READ_ROM>;
 						gpio_scenario = <GPIO_SCENARIO_OFF>;
 
-						10 { pname = I2C_OFF;			pin = <PIN_I2C 0 500>; 					};
-						20 { pname = "gc02m1_macro_iovdd";	pin = <PIN_REGULATOR 0 0>;				};	/* CAM_VDDIO_1P8 */
+						10 { pname = I2C_OFF;			pin = <PIN_I2C 0 500>;										};
+						20 { pname = "iovdd_ldo";		pin = <PIN_OUTPUT 0 0>;			gpio = GC02M1_MACRO_IOVDD;	};
+						/* 40 ms low time for IO before EEPROM/OTPROM read */
+						30 { pname = DELAY;			pin = <PIN_NONE 0 40000>;							};
 
 					};
 
 				}; /* power_seq */
 			}; /* is_sensor_gc02m1_macro */
 
-			fimc_is_flash_s2mu106: fimc-is-flash-s2mu106@17 {
-				compatible = "samsung,sensor-flash-s2mu106";
+			fimc_is_flash_gpio: fimc-is-flash-gpio@0 {
+				compatible = "samsung,sensor-flash-sm5714";
 				id = <0 4>;
 				status = "okay";
 

@@ -1,13 +1,13 @@
-#ifndef IS_VENDOR_CONFIG_AAS_V71X_H
-#define IS_VENDOR_CONFIG_AAS_V71X_H
+#ifndef IS_VENDOR_CONFIG_MMT_V12_H
+#define IS_VENDOR_CONFIG_MMT_V12_H
 
 #define VENDER_PATH
 
 /***** CAL ROM DEFINE *****/
 #define ROM_DEBUG
 #define ROM_CRC32_DEBUG
-#define SKIP_CHECK_CRC                                        /* Skip the CRC CHECK of cal data */
-#define USE_SHARED_ROM_REAR3                                  /* Rear3 Camera share the ROM with Rear(Wide)*/
+//#define SKIP_CHECK_CRC                                        /* Skip the CRC CHECK of cal data */
+//#define USE_SHARED_ROM_REAR3                                  /* Rear3 Camera share the ROM with Rear(Wide)*/
 
 //#define USE_AE_CAL                                          /* USE Ae cal data in rear camera, Only VENDER_CAL_STRUCT_VER2 */
 
@@ -25,6 +25,11 @@
 #define CAMERA_REAR4               (REAR_MACRO_CAMERA)          /* For Rear3 of SYSFS */
 //#define CAMERA_FRONT2            (FRONT_SUB_CAMERA)         /* For Front2 of SYSFS */
 
+#define SENSOR_OTP_GC5035
+#define SENSOR_OTP_GC02M1
+#define SENSOR_OTP_SR846
+
+#define USES_STANDARD_CAL_RELOAD
 
 /***** SUPPORT FUCNTION DEFINE *****/
 #define SAMSUNG_LIVE_OUTFOCUS                                 /* Allocate memory For Dual Camera */
@@ -36,7 +41,8 @@
 //#define SUPPORT_SENSOR_3DHDR                                /* whether capable of 3DHDR or not */
 //#define SUPPORT_REMOSAIC_CROP_ZOOM
 //#undef OVERFLOW_PANIC_ENABLE_CSIS                           /* Not Support Kernel Panic when CSIS OVERFLOW */
-
+#define DISABLE_DUAL_SYNC
+#define USE_MONO_SENSOR
 
 /***** DDK - DRIVER INTERFACE *****/
 /* This feature since A50s(ramen) and A30s(lassen).
@@ -47,7 +53,7 @@
 
 
 /***** HW DEFENDANT DEFINE *****/
-//#define USE_CAMERA_ACT_DRIVER_SOFT_LANDING                    /* Using NRC based softlanding for DW-9808*/
+#define USE_CAMERA_ACT_DRIVER_SOFT_LANDING                    /* Using NRC based softlanding for FP5529 */
 #define USE_COMMON_CAM_IO_PWR                                 /* CAM_VDDIO_1P8 Power is used commonly for all camera and EEPROM */
 
 
@@ -61,4 +67,11 @@
 #define CSI_SCENARIO_SEN_FRONT	(1)
 #endif
 
-#endif /* IS_VENDOR_CONFIG_AAS_V71X_H */
+//#define SM5714_DEBUG_PRINT_REGMAP
+
+/* For the demands to modify DVFS CAM Level only in 16:9 ratio of rear recording.
+ * This modification is only limited to A21s.
+ */
+#define USE_SPECIFIC_MIPISPEED
+
+#endif /* IS_VENDOR_CONFIG_MMT_V12_H */
