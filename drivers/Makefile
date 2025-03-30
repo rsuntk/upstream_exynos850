@@ -204,6 +204,9 @@ obj-$(CONFIG_SEC_EXT)		+= samsung/
 # uH
 obj-$(CONFIG_UH)		+= uh/
 
+# sensors drivers
+obj-y				+= sensors/
+
 obj-y += regulator/pmic_class/ # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 obj-y += usb/typec/sm/sm5714/ # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
 obj-y += misc/drb/ # ADDED BY LEGO AUTOMATICALLY: DO NOT SUBMIT
